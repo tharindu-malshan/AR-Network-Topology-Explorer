@@ -14,6 +14,8 @@ public class MultiTopologyPacketManager : MonoBehaviour
 
     public GameObject dataPacketPrefab;
 
+    public NetworkStatusManager statusManager;
+
     public float packetSpeed = 0.5f;
     public float packetHeight = 0.06f;
 
@@ -205,7 +207,16 @@ int destinationIndex = destinationDropdown.value - 1;
     {
         if (packetStatusText != null)
             packetStatusText.text = message;
-
+              
+             if (statusManager != null)
+    {
+    if (message.StartsWith("SUCCESS"))
+        statusManager.ShowSuccess(message);
+    else if (message.StartsWith("Sending"))
+        statusManager.ShowWarning(message);
+    else
+        statusManager.ShowError(message);
+    } 
         Debug.Log(message);
     }
 }

@@ -9,12 +9,18 @@ public class UnifiedNetworkManager : MonoBehaviour
 
     public MultiTopologyPacketManager multiPacketManager;
 
+    public NetworkStatusManager statusManager;
+
+    public MeshPacketManager meshPacketManager;
+
     public void SendData()
     {
         if (placementManager == null ||
             placementManager.PlacedNetwork == null)
         {
-            Debug.LogWarning("Please place a topology first!");
+            if (statusManager != null)
+                statusManager.ShowError("Place a topology first!");
+
             return;
         }
 
@@ -26,22 +32,42 @@ public class UnifiedNetworkManager : MonoBehaviour
         switch (topologyName)
         {
             case "StarTopology":
+
                 if (starPacketManager != null)
-                {
                     starPacketManager.SendData();
-                }
+                else if (statusManager != null)
+                    statusManager.ShowError("Star Packet Manager missing!");
+
                 break;
 
             case "BusTopology":
             case "RingTopology":
+
                 if (multiPacketManager != null)
-                {
                     multiPacketManager.SendPacket();
-                }
+                else if (statusManager != null)
+                    statusManager.ShowError("Bus/Ring Packet Manager missing!");
+
                 break;
 
+                case "MeshTopology":
+
+    if (meshPacketManager != null)
+    {
+        meshPacketManager.SendPacket();
+    }
+    else if (statusManager != null)
+    {
+        statusManager.ShowError("Mesh Packet Manager missing!");
+    }
+
+    break;
+
             default:
-                Debug.LogWarning("Unknown topology!");
+
+                if (statusManager != null)
+                    statusManager.ShowError("Unknown topology!");
+
                 break;
         }
     }

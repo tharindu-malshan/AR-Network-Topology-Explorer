@@ -14,6 +14,7 @@ public class NetworkPlacementManager : MonoBehaviour
     public GameObject starTopologyPrefab;
     public GameObject busTopologyPrefab;
     public GameObject ringTopologyPrefab;
+    public GameObject meshTopologyPrefab;
 
     public TMP_Dropdown topologyDropdown;
 
@@ -66,30 +67,39 @@ public class NetworkPlacementManager : MonoBehaviour
     }
 
     
+
 private GameObject GetSelectedTopologyPrefab()
 {
     if (topologyDropdown == null)
+    {
+        Debug.LogWarning("Topology Dropdown is missing!");
         return null;
+    }
 
     switch (topologyDropdown.value)
     {
-        case 0: // Select Topology
+        case 0:
             Debug.Log("Please select a topology first!");
             return null;
 
-        case 1: // Star
+        case 1:
             return starTopologyPrefab;
 
-        case 2: // Bus
+        case 2:
             return busTopologyPrefab;
 
-        case 3: // Ring
+        case 3:
             return ringTopologyPrefab;
 
+        case 4:
+            return meshTopologyPrefab;
+
         default:
+            Debug.LogWarning("Unknown topology selected!");
             return null;
     }
 }
+
 
     private bool TryGetTap(out Vector2 position)
     {
