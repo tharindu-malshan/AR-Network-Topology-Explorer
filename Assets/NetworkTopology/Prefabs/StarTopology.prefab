@@ -111,8 +111,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.37436575, y: 0.40300107, z: 0.28652185}
+  m_Center: {x: -0.228171, y: -0.3, z: -0.6}
 --- !u!1 &620812471315834597
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +171,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5793c641974b3f3448c50b767da1e482, type: 2}
+  - {fileID: 2100000, guid: 2efd06a89121f794882ce6dfc194d73a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -313,7 +313,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5793c641974b3f3448c50b767da1e482, type: 2}
+  - {fileID: 2100000, guid: 2efd06a89121f794882ce6dfc194d73a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -455,7 +455,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5793c641974b3f3448c50b767da1e482, type: 2}
+  - {fileID: 2100000, guid: 2efd06a89121f794882ce6dfc194d73a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -803,7 +803,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.3743657, y: 0.4030011, z: 0.2865219}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5383599220376033971
 GameObject:
@@ -1028,8 +1028,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.3743657, y: 0.4030011, z: 0.2865219}
+  m_Center: {x: 0.5171, y: -0.3, z: -0.7}
 --- !u!1 &7215549551982284473
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1088,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5793c641974b3f3448c50b767da1e482, type: 2}
+  - {fileID: 2100000, guid: 2efd06a89121f794882ce6dfc194d73a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1283,7 +1283,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.3743657, y: 0.4030011, z: 0.2865219}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &954619290842665590
 PrefabInstance:

@@ -1,11 +1,19 @@
 
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class NetworkPacketManager : MonoBehaviour
 {
     public NetworkPlacementManager placementManager;
     public GameObject packetPrefab;
+
+    public NetworkDeviceHighlighter deviceHighlighter;
+
+    public TMP_Dropdown sourceDropdown;
+    public TMP_Dropdown destinationDropdown;
+    public TMP_Text statusText;
+    public NetworkConnectionManager connectionManager;
 
     public float packetSpeed = 0.5f;
 
@@ -19,42 +27,88 @@ public class NetworkPacketManager : MonoBehaviour
         if (placementManager == null ||
             !placementManager.HasPlacedNetwork)
         {
-            Debug.Log("Place the network first!");
+            SetStatus("Place the network first!");
             return;
         }
 
-        Transform network = placementManager.PlacedNetwork.transform;
+        if (sourceDropdown == null ||
+            destinationDropdown == null ||
+            packetPrefab == null)
+        {
+            SetStatus("Missing dropdown or packet prefab!");
+            return;
+        }
 
-        Transform pc1 = network.Find("PC1");
-        Transform pc3 = network.Find("PC3");
+        string sourceName =
+            sourceDropdown.options[sourceDropdown.value].text;
+
+        string destinationName =
+            destinationDropdown.options[destinationDropdown.value].text;
+
+            Debug.Log("Selected Source: " + sourceName);
+Debug.Log("Selected Destination: " + destinationName);
+
+        if (sourceName == destinationName)
+        {
+            SetStatus("Select two different PCs!");
+            return;
+        }
+
+        Transform network =
+            placementManager.PlacedNetwork.transform;
+
+        Transform source = network.Find(sourceName);
+        Transform destination = network.Find(destinationName);
         Transform networkSwitch = network.Find("NetworkSwitch");
 
-        if (pc1 == null || pc3 == null || networkSwitch == null)
+        if (source == null ||
+            destination == null ||
+            networkSwitch == null)
         {
-            Debug.LogError("Network devices not found!");
+            SetStatus("Network devices not found!");
             return;
         }
 
-        if (packetPrefab == null)
-        {
-            Debug.LogError("Packet Prefab is missing!");
-            return;
-        }
+        if (deviceHighlighter != null)
+    {
+    deviceHighlighter.Highlight(source, destination);
+    }
+          
+       if (connectionManager != null)
+{
+    if (!connectionManager.IsConnected(sourceName))
+    {
+        SetStatus("TRANSFER FAILED! " +
+                  sourceName + " is disconnected.");
+        return;
+    }
 
+    if (!connectionManager.IsConnected(destinationName))
+    {
+        SetStatus("TRANSFER FAILED! " +
+                  destinationName + " is disconnected.");
+        return;
+    }
+}   
         StartCoroutine(AnimatePacket(
-            pc1.position,
-            networkSwitch.position,
-            pc3.position
+            source.position + Vector3.up * 0.2f,
+            networkSwitch.position + Vector3.up * 0.2f,
+            destination.position + Vector3.up * 0.2f,
+            sourceName,
+            destinationName
         ));
     }
 
     private IEnumerator AnimatePacket(
         Vector3 start,
         Vector3 middle,
-        Vector3 end)
+        Vector3 end,
+        string sourceName,
+        string destinationName)
     {
         isSending = true;
 
+        SetStatus("Sending from " + sourceName + " to Switch...");
         GameObject packet = Instantiate(
             packetPrefab,
             start,
@@ -62,13 +116,15 @@ public class NetworkPacketManager : MonoBehaviour
         );
 
         yield return MovePacket(packet.transform, start, middle);
+        SetStatus("Switch forwarding packet to " + destinationName + "...");
         yield return MovePacket(packet.transform, middle, end);
 
         Destroy(packet);
 
-        isSending = false;
+        SetStatus("SUCCESS! Data delivered from " +
+          sourceName + " to " + destinationName);
 
-        Debug.Log("Data successfully transferred from PC1 to PC3!");
+        isSending = false;
     }
 
     private IEnumerator MovePacket(
@@ -85,13 +141,23 @@ public class NetworkPacketManager : MonoBehaviour
         {
             elapsed += Time.deltaTime;
 
-            float t = Mathf.Clamp01(elapsed / duration);
-
-            packet.position = Vector3.Lerp(start, end, t);
+            packet.position = Vector3.Lerp(
+                start,
+                end,
+                Mathf.Clamp01(elapsed / duration)
+            );
 
             yield return null;
         }
 
         packet.position = end;
+    }
+
+    private void SetStatus(string message)
+    {
+        Debug.Log(message);
+
+        if (statusText != null)
+            statusText.text = message;
     }
 }

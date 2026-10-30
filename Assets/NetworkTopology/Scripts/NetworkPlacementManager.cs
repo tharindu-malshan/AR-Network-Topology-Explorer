@@ -1,6 +1,8 @@
 
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -8,56 +10,95 @@ using UnityEngine.XR.ARSubsystems;
 public class NetworkPlacementManager : MonoBehaviour
 {
     public ARRaycastManager raycastManager;
+
     public GameObject starTopologyPrefab;
+    public GameObject busTopologyPrefab;
+    public GameObject ringTopologyPrefab;
+
+    public TMP_Dropdown topologyDropdown;
 
     private GameObject placedNetwork;
-    public GameObject PlacedNetwork => placedNetwork;
 
-    private readonly List<ARRaycastHit> hits =
+    private List<ARRaycastHit> hits =
         new List<ARRaycastHit>();
 
     public bool HasPlacedNetwork => placedNetwork != null;
+    public GameObject PlacedNetwork => placedNetwork;
 
     void Update()
     {
         if (placedNetwork != null)
             return;
 
-        if (!TryGetTapPosition(out Vector2 screenPosition))
+        if (!TryGetTap(out Vector2 tapPosition))
             return;
 
-        if (raycastManager == null || starTopologyPrefab == null)
+        if (EventSystem.current != null &&
+            EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        if (raycastManager == null)
             return;
 
         if (raycastManager.Raycast(
-            screenPosition,
+            tapPosition,
             hits,
             TrackableType.PlaneWithinPolygon))
         {
-            Pose hitPose = hits[0].pose;
+            GameObject selectedPrefab =
+                GetSelectedTopologyPrefab();
+
+            if (selectedPrefab == null)
+                return;
+
+            Pose pose = hits[0].pose;
 
             placedNetwork = Instantiate(
-                starTopologyPrefab,
-                hitPose.position,
+                selectedPrefab,
+                pose.position,
                 Quaternion.identity
             );
 
-            Debug.Log("Star Topology placed successfully!");
-        }
-        else
-        {
-            Debug.Log("No AR plane detected at tap position.");
+            Debug.Log(
+                "Placed topology: " + selectedPrefab.name
+            );
         }
     }
 
-    private bool TryGetTapPosition(out Vector2 position)
+    
+private GameObject GetSelectedTopologyPrefab()
+{
+    if (topologyDropdown == null)
+        return null;
+
+    switch (topologyDropdown.value)
+    {
+        case 0: // Select Topology
+            Debug.Log("Please select a topology first!");
+            return null;
+
+        case 1: // Star
+            return starTopologyPrefab;
+
+        case 2: // Bus
+            return busTopologyPrefab;
+
+        case 3: // Ring
+            return ringTopologyPrefab;
+
+        default:
+            return null;
+    }
+}
+
+    private bool TryGetTap(out Vector2 position)
     {
         position = Vector2.zero;
 
-        // Android touchscreen
         if (Touchscreen.current != null)
         {
-            var touch = Touchscreen.current.primaryTouch;
+            var touch =
+                Touchscreen.current.primaryTouch;
 
             if (touch.press.wasPressedThisFrame)
             {
@@ -66,7 +107,6 @@ public class NetworkPlacementManager : MonoBehaviour
             }
         }
 
-        // Mouse for XR Simulation
         if (Mouse.current != null &&
             Mouse.current.leftButton.wasPressedThisFrame)
         {
@@ -75,5 +115,13 @@ public class NetworkPlacementManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void ResetPlacement()
+    {
+        if (placedNetwork != null)
+            Destroy(placedNetwork);
+
+        placedNetwork = null;
     }
 }
