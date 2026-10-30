@@ -13,6 +13,8 @@ public class UnifiedNetworkManager : MonoBehaviour
 
     public MeshPacketManager meshPacketManager;
 
+    public TreePacketManager treePacketManager;
+
     public void SendData()
     {
         if (placementManager == null ||
@@ -62,6 +64,23 @@ public class UnifiedNetworkManager : MonoBehaviour
     }
 
     break;
+
+                
+        case "TreeTopology":
+
+    if (treePacketManager != null)
+    {
+        treePacketManager.SendPacket();
+    }
+    else if (statusManager != null)
+    {
+        statusManager.ShowError(
+            "Tree Packet Manager is missing!"
+        );
+    }
+
+    break;
+
 
             default:
 

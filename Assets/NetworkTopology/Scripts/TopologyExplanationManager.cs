@@ -67,6 +67,17 @@ public class TopologyExplanationManager : MonoBehaviour
             "Disadvantage: Requires more cables and costs more."
         );
             break;
+
+            
+                case 5:
+                ShowInfo(
+                "TREE TOPOLOGY",
+                "A hierarchical network where computers connect through branch switches and a root switch.",
+                "Advantage: Easy to expand and organize large networks.",
+                "Disadvantage: Failure of a main switch can disconnect multiple computers."
+                );
+                break;
+
         }
     }
 

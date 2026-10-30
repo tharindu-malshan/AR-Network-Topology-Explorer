@@ -15,6 +15,7 @@ public class NetworkPlacementManager : MonoBehaviour
     public GameObject busTopologyPrefab;
     public GameObject ringTopologyPrefab;
     public GameObject meshTopologyPrefab;
+    public GameObject treeTopologyPrefab;
 
     public TMP_Dropdown topologyDropdown;
 
@@ -93,6 +94,9 @@ private GameObject GetSelectedTopologyPrefab()
 
         case 4:
             return meshTopologyPrefab;
+
+        case 5:
+            return treeTopologyPrefab;
 
         default:
             Debug.LogWarning("Unknown topology selected!");
