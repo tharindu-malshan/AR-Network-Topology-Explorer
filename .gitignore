@@ -1,6 +1,7 @@
 
 # Unity backup folders
 ARNetworkTopologyExplorer*_BackUp*/
+.utmp/
 
 # Unity generated folders
 [Ll]ibrary/
