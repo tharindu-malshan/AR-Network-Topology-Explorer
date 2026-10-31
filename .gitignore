@@ -1,3 +1,8 @@
+
+# Unity backup folders
+ARNetworkTopologyExplorer*_BackUp*/
+
+# Unity generated folders
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -5,10 +10,17 @@
 [Bb]uilds/
 [Ll]ogs/
 [Uu]serSettings/
+
+# IDE generated files
 .vs/
 .vscode/
 .idea/
 *.csproj
 *.sln
+*.slnx
 *.user
 *.tmp
+
+# Keep old APK files out of Git
+# Uncomment the next line if you want to ignore all APK files
+# *.apk
